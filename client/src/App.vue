@@ -1,23 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <img alt="Vue logo" src="./assets/logo.png">
+    <Movies />
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+<script>
+import Movies from './components/Movies/Movies.vue'
+import { db } from "./main";
 
-export default Vue.extend({
-  name: "App",
+export default {
+  name: 'App',
   components: {
-    HelloWorld
+    Movies,
+  },
+  created() {
+    db.ref('/').once('value').then((data) => {
+      this.$store.commit('setMovies', Object.values(data.toJSON()));
+    })
   }
-});
+}
 </script>
 
-<style lang="scss">
+<style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -25,5 +30,6 @@ export default Vue.extend({
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background-color: black;
 }
 </style>

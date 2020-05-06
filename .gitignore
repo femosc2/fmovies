@@ -1,2 +1,3 @@
 server/src/node_modules
 .env
+client/.env.example
