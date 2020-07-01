@@ -2,17 +2,20 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
     <Movies />
+    <MovieOverlay />
   </div>
 </template>
 
 <script>
 import Movies from './components/Movies/Movies.vue'
+import MovieOverlay from './components/MovieOverlay/MovieOverlay'
 import { db } from "./main";
 
 export default {
   name: 'App',
   components: {
     Movies,
+    MovieOverlay,
   },
   created() {
     db.ref('/').once('value').then((data) => {

@@ -1,7 +1,8 @@
 <template>
 <li>
   <figure class="movie"
-  v-bind:style="{ 'background-image': 'url(' + movie.Poster + ') ' }">
+  v-bind:style="{ 'background-image': 'url(' + movie.Poster + ') ' }"
+  @click="setMovieOverlay()">
   <div>
     {{ movie.FemoRating }}
   </div>
@@ -13,6 +14,11 @@
 export default {
   name: "HelloWorld",
   props: ["movie"],
+  methods: {
+    setMovieOverlay() {
+      this.$store.commit('setMovieOverlay', this.movie);
+    }
+  }
 };
 </script>
 

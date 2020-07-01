@@ -21,5 +21,7 @@ ul {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: flex-start;
+  width: 100%;
+  justify-content: center;
 }
 </style>
