@@ -3,9 +3,9 @@
         <section id="movieInfo">
             <h1> {{ movieOverlay.Title }} ({{ movieOverlay.Year }})</h1>
             <h3> Runtime: {{ movieOverlay.Runtime }}</h3>
-            <ul>
+            <ul id="genre">
                 <li v-for="genre in movieOverlay.Genre" :key="genre">
-                    {{ genre }}
+                    {{ genre }} 
                 </li>
             </ul>
             <h2> Director: {{ movieOverlay.Director }}</h2>
@@ -17,6 +17,7 @@
             </ul>
             <h2> IMDB rating: {{ movieOverlay.ImdbRating }}</h2>
             <h2> My rating: {{ movieOverlay.FemoRating }}</h2>
+            <p> {{ movieOverlay.Plot }}</p>
         </section>
         <img :src="movieOverlay.Poster" />
         <div @click="closeOverlay">
@@ -72,5 +73,17 @@ img {
     text-align: left;
     margin-left: 50%;
     margin-top: 10%;
+}
+
+ul {
+    list-style: none;
+}
+
+#genre {
+    display: inline-flex;
+}
+
+li {
+    padding: 2px 5px 2px 5px;
 }
 </style>
