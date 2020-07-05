@@ -36,13 +36,13 @@ export default {
 }
 
 div {
-  background: linear-gradient(360deg, rgba(0,0,0, 0.8) 65%, rgba(0,212,255,0) 100%);
+  background: linear-gradient(360deg, rgba(44,62,80, 0.9) 65%, rgba(0,212,255,0) 100%);
   overflow: none;
   height: inherit;
   width: inherit;
   text-align: center;
   padding-top: 66%;
   font-size: 6rem;
-  color: red;
+  color: white;
 }
 </style>

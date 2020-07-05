@@ -11,7 +11,7 @@ export default {
   props: ["movies"],
   components: {
     Movie
-    }
+    },
 };
 </script>
 

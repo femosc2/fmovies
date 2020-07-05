@@ -1,7 +1,13 @@
 <template>
+<section>
 <div v-if="movies.length !== 0">
-  <MovieList :movies="movies" />
+  <MovieList  v-if="filteredMovies.length === 0" :movies="movies" />
+  <MovieList  v-if="filteredMovies.length !== 0" :movies="filteredMovies" />
 </div>
+<div v-if="movies.length === 0">
+  <p> No Movies found!</p>
+</div>
+</section>
 </template>
 
 <script>
@@ -14,6 +20,9 @@ export default {
   computed: {
     movies() {
       return this.$store.state.movies;
+    },
+    filteredMovies() {
+      return this.$store.state.filteredMovies;
     }
   }
 }
@@ -34,5 +43,8 @@ li {
 }
 a {
   color: #42b983;
+}
+div {
+  margin-top: 7%;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <Search />
     <Movies />
     <MovieOverlay />
   </div>
@@ -9,6 +9,7 @@
 <script>
 import Movies from './components/Movies/Movies.vue'
 import MovieOverlay from './components/MovieOverlay/MovieOverlay'
+import Search from './components/Search/Search'
 import { db } from "./main";
 
 export default {
@@ -16,6 +17,7 @@ export default {
   components: {
     Movies,
     MovieOverlay,
+    Search
   },
   created() {
     db.ref('/').once('value').then((data) => {
@@ -33,6 +35,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-  background-color: black;
+  background-color: #2c3e50;
 }
 </style>

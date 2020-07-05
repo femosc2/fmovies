@@ -12,7 +12,7 @@ interface IMovie {
   Plot: string,
   ImdbRating: string,
   FemoRating: string,
-  Watched: Date,
+  Watched: string,
   Poster: string,
 }
 
@@ -35,7 +35,7 @@ export const createMovie = (req: Request, res: Response): Response<any> => {
         Plot,
         ImdbRating: imdbRating,
         FemoRating,
-        Watched: new Date(),
+        Watched: new Date().toDateString(),
         Poster
       }
       db.ref(`${Title}`).set(newMovie);

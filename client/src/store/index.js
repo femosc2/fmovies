@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     movies: [],
     movieOverlay: [],
+    filteredMovies: [],
   },
   mutations: {
     setMovies(state, movies) {
@@ -14,8 +15,11 @@ export default new Vuex.Store({
     },
     setMovieOverlay(state, movie) {
       state.movieOverlay = movie;
+    },
+    setFilteredMovies(state, movies) {
+      state.filteredMovies = movies;
     }
-  },
+    },
   actions: {
   },
   modules: {
@@ -23,6 +27,9 @@ export default new Vuex.Store({
   getters: {
     movieOverlay(state) {
       return state.movieOverlay;
+    },
+    filteredMovies(state) {
+      return state.filteredMovies;
     }
   }
 })
