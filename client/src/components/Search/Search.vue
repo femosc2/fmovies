@@ -20,9 +20,9 @@ export default {
   },
   methods: {
     setFilter() {
-        this.$store.commit('setSearch', this.search)
+        this.$store.commit('setSearch', this.search.toLowerCase())
         this.filter = this.movies.filter((m) => 
-            m.Title.includes(this.search) || m.Director.includes(this.search) || m.Plot.includes(this.search) || m.Year.includes(this.search)
+            m.Title.toLowerCase().includes(this.search.toLowerCase()) || m.Director.toLowerCase().includes(this.search.toLowerCase()) || m.Plot.toLowerCase().includes(this.search.toLowerCase()) || m.Year.toLowerCase().includes(this.search.toLowerCase())
         )
         this.$store.commit('setFilteredMovies', this.filter);
     }
