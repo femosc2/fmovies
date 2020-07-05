@@ -8,6 +8,7 @@ export default new Vuex.Store({
     movies: [],
     movieOverlay: [],
     filteredMovies: [],
+    search: "",
   },
   mutations: {
     setMovies(state, movies) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     setFilteredMovies(state, movies) {
       state.filteredMovies = movies;
+    },
+    setSearch(state, search) {
+      state.search = search;
     }
     },
   actions: {

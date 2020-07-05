@@ -1,7 +1,7 @@
 <template>
 <section>
 <div v-if="movies.length !== 0">
-  <MovieList  v-if="filteredMovies.length === 0" :movies="movies" />
+  <MovieList  v-if="filteredMovies.length === 0 && search === ''" :movies="movies" />
   <MovieList  v-if="filteredMovies.length !== 0" :movies="filteredMovies" />
 </div>
 <div v-if="movies.length === 0">
@@ -23,6 +23,9 @@ export default {
     },
     filteredMovies() {
       return this.$store.state.filteredMovies;
+    },
+    search() {
+      return this.$store.state.search;
     }
   }
 }

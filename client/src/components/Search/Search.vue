@@ -20,6 +20,7 @@ export default {
   },
   methods: {
     setFilter() {
+        this.$store.commit('setSearch', this.search)
         this.filter = this.movies.filter((m) => 
             m.Title.includes(this.search) || m.Director.includes(this.search) || m.Plot.includes(this.search) || m.Year.includes(this.search)
         )
