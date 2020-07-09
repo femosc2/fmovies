@@ -45,4 +45,7 @@ div {
   font-size: 6rem;
   color: white;
 }
+
+@media screen and (min-width: 700px) {
+  }
 </style>

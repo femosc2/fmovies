@@ -86,4 +86,28 @@ ul {
 li {
     padding: 2px 5px 2px 5px;
 }
+
+  @media screen and (max-width: 700px) {
+    img {
+    transform: scale(0.5);
+    left: -12%;
+    top: 0%;
+  }
+
+  h1 {
+      font-size: 20px;
+  }
+  h2 {
+      font-size: 14px;
+  }
+  h3 {
+      font-size: 12px;
+  }
+  #genre {
+      display: block;
+  }
+  p {
+      font-size: 15px;
+  }
+  }
 </style>

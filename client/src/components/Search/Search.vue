@@ -44,4 +44,24 @@ input {
   border: none;
   border-radius: 20px;
 }
+
+@media screen and (max-width: 700px) {
+  div {
+    display: flex;
+    top: 0;
+    z-index: 500;
+    position: fixed;
+    width: 100%;
+    background-color: rgba(0,0,0, 0.8);
+    height: 8vh;
+    box-shadow: 0px 9px 16px 0px rgba(0,0,0,0.75);
+  }
+  input {
+    align-self: center;
+    justify-self: center;;
+    width: 100%;
+    font-size: 13px;
+    border-radius: 0;
+  }
+  }
 </style>
