@@ -33,6 +33,7 @@ export default {
     padding: 0;
     margin: 0;
     margin-top: -55%;
+    cursor: pointer;
 }
 
 div {
