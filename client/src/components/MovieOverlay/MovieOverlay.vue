@@ -37,9 +37,6 @@ export default {
       movieOverlay() {
       }  
     },
-    created() {
-        console.log(this.movieOverlay)
-    },
     methods: {
         closeOverlay() {
             this.$store.commit('setMovieOverlay', []);

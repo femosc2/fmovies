@@ -27,7 +27,7 @@ export default {
     search() {
       return this.$store.state.search;
     }
-  }
+  },
 }
 </script>
 

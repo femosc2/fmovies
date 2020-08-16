@@ -21,7 +21,7 @@ export default {
   },
   created() {
     db.ref('/').once('value').then((data) => {
-      this.$store.commit('setMovies', Object.values(data.toJSON()));
+      this.$store.commit('setMovies', Object.values(data.toJSON()).sort((a, b) => b.FemoRating - a.FemoRating));
     })
   }
 }

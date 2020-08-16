@@ -22,8 +22,6 @@ export const createMovie = (req: Request, res: Response): Response<any> => {
     let newMovie: IMovie;
     const { Title, Runtime, Year, Genre, Director, Actors, Plot, imdbRating, Poster} = r.data;
 
-    console.log(r.data.Poster);
-
     try {
       newMovie = {
         Title,
