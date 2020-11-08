@@ -28,6 +28,11 @@ export default {
       return this.$store.state.search;
     }
   },
+  watch: {
+    movies() {
+      return this.$store.state.movies;
+    }
+  }
 }
 </script>
 
