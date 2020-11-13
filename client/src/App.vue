@@ -30,29 +30,14 @@ export default {
   created() {
     db.ref('/').once('value').then((data) => {
       this.unSortedMovies = Object.values(data.toJSON());
-      console.log(this.unSortedMovies.sort((a, b) => Date.parse(b.Watched) > Date.parse(a.Watched)));
-      console.log(Date.parse(this.unSortedMovies[1].Watched))
-      console.log(Date.parse(this.unSortedMovies[0].Watched))
-      this.$store.commit('setMovies', this.unSortedMovies.sort((a, b) => b.Watched - a.Watched));
+      this.$store.commit('setMovies', this.unSortedMovies.sort((m1, m2)=> m2.FemoRating - m1.FemoRating))
     })
   },
   computed: {
     movies() {
       return this.$store.state.movies;
     },
-    sortBy() {
-      return this.$store.state.sortBy;
-    }
   },
-  watch: {
-    sortBy() {
-      if (this.$store.state.sortBy === 'rating') {
-        return this.$store.commit('setMovies', this.unSortedMovies.sort((a, b) => b.FemoRating - a.FemoRatings ));
-      } else if (this.$store.state.sortBy === 'watched') {
-        return this.$store.commit('setMovies', this.unSortedMovies);
-      }
-    }
-  }
 }
 </script>
 

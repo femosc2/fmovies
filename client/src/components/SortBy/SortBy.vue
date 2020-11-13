@@ -11,7 +11,6 @@ export default {
   name: "HelloWorld",
   methods: {
     setSortBy(sortBy) {
-      console.log(this.$store.state)
       this.$store.commit('setSortBy', sortBy);
     }
   }
