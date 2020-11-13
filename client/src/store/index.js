@@ -9,6 +9,7 @@ export default new Vuex.Store({
     movieOverlay: [],
     filteredMovies: [],
     search: "",
+    sortBy: 'rating',
   },
   mutations: {
     setMovies(state, movies) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     setSearch(state, search) {
       state.search = search;
+    },
+    setSortBy(state, sort) {
+      state.sortBy = sort;
     }
     },
   actions: {

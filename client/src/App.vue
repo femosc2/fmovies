@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <SortBy />
     <Search />
     <Movies />
     <MovieOverlay />
@@ -10,6 +11,7 @@
 import Movies from './components/Movies/Movies.vue'
 import MovieOverlay from './components/MovieOverlay/MovieOverlay'
 import Search from './components/Search/Search'
+import SortBy from './components/SortBy/SortBy'
 import { db } from "./main";
 
 export default {
@@ -17,13 +19,25 @@ export default {
   components: {
     Movies,
     MovieOverlay,
-    Search
+    Search,
+    SortBy
+  },
+  data() {
+    return {
+      unSortedMovies: []
+    }
   },
   created() {
     db.ref('/').once('value').then((data) => {
-      this.$store.commit('setMovies', Object.values(data.toJSON()).sort((a, b) => b.FemoRating - a.FemoRating));
+      this.unSortedMovies = Object.values(data.toJSON());
+      this.$store.commit('setMovies', this.unSortedMovies.sort((m1, m2)=> m2.FemoRating - m1.FemoRating))
     })
-  }
+  },
+  computed: {
+    movies() {
+      return this.$store.state.movies;
+    },
+  },
 }
 </script>
 
