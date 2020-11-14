@@ -50,9 +50,12 @@ div {
 @media screen and (max-width: 700px) {
   .movie {
     width: 50vw;
+    margin-top: -85%;
   }
   div {
     font-size: 6rem;
+    background: none;
+    padding-top: none;
   }
   }
 </style>
