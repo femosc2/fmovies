@@ -67,9 +67,9 @@ export default {
 <style scoped>
 input {
   width: 50vw;
-  height: 5vh;
+  height: 70px;
   text-align: center;
-  font-size: 40px;
+  font-size: 25px;
   background-color: rgba(255, 255, 255, 0.8);
   border: none;
   border-radius: 20px;
@@ -90,7 +90,7 @@ input {
     align-self: center;
     justify-self: center;
     width: 100%;
-    font-size: 13px;
+    font-size: 15px;
     border-radius: 0;
   }
 }
