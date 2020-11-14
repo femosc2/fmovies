@@ -1,4 +1,4 @@
-import { createMovie } from "./endpoints/movies.swagger";
+import { createMovie, createMovieById } from "./endpoints/movies.swagger";
 
 export const swaggerDocument = {
     openapi: '3.0.1',
@@ -28,6 +28,9 @@ export const swaggerDocument = {
         "/api/v1/movie": {
             "post": createMovie
         },
+        "/api/v1/movie/id": {
+            "post": createMovieById
+        },
     },
     definitions: {
         "Movie": {
@@ -37,6 +40,17 @@ export const swaggerDocument = {
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                },
+            }
+        },
+        "MovieById": {
+            "type": "object",
+            "properties": {
+                "rating": {
+                    "type": "string"
+                },
+                "imdbId": {
                     "type": "string"
                 },
             }
