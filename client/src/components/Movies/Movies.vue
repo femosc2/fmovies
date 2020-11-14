@@ -1,26 +1,29 @@
 <template>
-<section>
-<div v-if="movies.length !== 0">
-  <MovieList  v-if="filteredMovies.length === 0 && search === ''" :movies="movies" />
-  <MovieList  v-if="filteredMovies.length !== 0" :movies="filteredMovies" />
-</div>
-<div v-if="movies.length === 0">
-  <p> No Movies found!</p>
-</div>
-</section>
+  <section>
+    <div v-if="movies.length !== 0">
+      <MovieList
+        v-if="filteredMovies.length === 0 && search === ''"
+        :movies="movies"
+      />
+      <MovieList v-if="filteredMovies.length !== 0" :movies="filteredMovies" />
+    </div>
+    <div v-if="movies.length === 0">
+      <p>No Movies found!</p>
+    </div>
+  </section>
 </template>
 
 <script>
-import MovieList from './components/MovieList';
+import MovieList from "./components/MovieList";
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   components: {
     MovieList,
   },
   data() {
     return {
-    sortedMovies: [],
-    }
+      sortedMovies: [],
+    };
   },
   computed: {
     movies() {
@@ -34,18 +37,22 @@ export default {
     },
     sortBy() {
       return this.$store.state.sortBy;
-    }
+    },
   },
   watch: {
     sortBy() {
-      if (this.$store.state.sortBy === 'rating') {
-        this.sortedMovies = this.$store.state.movies.sort((m1, m2)=> m2.FemoRating - m1.FemoRating);
+      if (this.$store.state.sortBy === "rating") {
+        this.sortedMovies = this.$store.state.movies.sort(
+          (m1, m2) => m2.FemoRating - m1.FemoRating
+        );
       } else {
-        this.sortedMovies = this.$store.state.movies.sort((m1, m2)=> Date.parse(m2.Watched) - Date.parse(m1.Watched));
+        this.sortedMovies = this.$store.state.movies.sort(
+          (m1, m2) => Date.parse(m2.Watched) - Date.parse(m1.Watched)
+        );
       }
     },
-  }
-}
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -65,6 +72,11 @@ a {
   color: #42b983;
 }
 div {
-  margin-top: 7%;
+  margin-top: 100px;
+}
+@media screen and (max-width: 700px) {
+  div {
+    margin-top: 150px;
+  }
 }
 </style>

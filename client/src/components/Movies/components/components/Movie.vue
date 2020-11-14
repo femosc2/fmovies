@@ -47,6 +47,12 @@ div {
   color: white;
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (max-width: 700px) {
+  .movie {
+    width: 50vw;
+  }
+  div {
+    font-size: 6rem;
+  }
   }
 </style>
