@@ -26,11 +26,11 @@ app.use(function (req, res, next) { // Allows for easy testing
   next();
 });
 
-const port = 8081; // default port to listen
+const port = 8082; // default port to listen
 app.use('/api/v1', api);
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 app.listen( port, () => {
-    console.log( `server started at http://localhost:${ port }` );
+    console.log( `server started at http://localhost:${ port }/swagger` );
 });
