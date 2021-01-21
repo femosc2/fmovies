@@ -49,9 +49,10 @@ export const createMovieById = (req: Request, res: Response): Response<Response>
   const FemoRating = req.query.rating.toString();
   axios.get(`http://www.omdbapi.com/?i=${req.query.imdbId.toString()}&apikey=${process.env.OMDB_APIKEY}`).then((r) => {
     let newMovie: IMovie;
-    const { Title, Runtime, Year, Genre, Director, Actors, Plot, imdbRating, Poster} = r.data;
+    let { Title, Runtime, Year, Genre, Director, Actors, Plot, imdbRating, Poster} = r.data;
 
     try {
+      Title = Title.includes('.') && Title.replace('.',' ');
       newMovie = {
         Title,
         Runtime,
