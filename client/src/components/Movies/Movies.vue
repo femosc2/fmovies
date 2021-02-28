@@ -53,21 +53,35 @@ export default {
     },
     movies() {
       let actors = [];
-      let count = {};
+      let directors = [];
+      let actorCount = {};
+      let directorCount = {};
       this.movies.forEach((m) => {
-      Object.values(m.Actors).forEach((a) => {
-        actors = [...actors, a.trim()]
-      })
-    }
-    );
+        Object.values(m.Actors).forEach((a) => {
+          actors = [...actors, a.trim()];
+        });
+      });
 
-    actors.forEach(a => {
-      count[a] = count[a] ? (count[a] += 1) : 1;
-    })
-    const sortedActors = Object.entries(count).sort(([,a], [,b]) => b - a);
+      actors.forEach((a) => {
+        actorCount[a] = actorCount[a] ? (actorCount[a] += 1) : 1;
+      });
+      const sortedActors = Object.entries(actorCount).sort(([, a], [, b]) => b - a);
 
-    console.log(sortedActors)
-    }
+      console.log(sortedActors);
+
+      this.movies.forEach(m => {
+        directors = [...directors, m.Director]
+      });
+
+       directors.forEach((a) => {
+        directorCount[a] = directorCount[a] ? (directorCount[a] += 1) : 1;
+      });
+
+      const sortedDirectors = Object.entries(directorCount).sort(([, a], [, b]) => b - a);
+
+      console.log(sortedDirectors);
+
+    },
   },
 };
 </script>
