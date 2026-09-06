@@ -18,22 +18,15 @@ const router = createRouter({
   ],
 });
 
-// Route guard is UX only — it prompts sign-in and hides the admin UI from non-admins. The real
-// security boundary is the serverless function, which verifies the ID token + allowlist itself.
+// The /admin view is always allowed to render — it gates its own content on auth state
+// (sign-in button -> not-authorized -> upload form). We only wait for the first auth state
+// so the view paints the correct step immediately instead of flashing the sign-in button.
+// Sign-in itself happens on a real button click inside AdminView (browsers block popups that
+// aren't triggered by a user gesture, which is why the guard must NOT open the popup).
 router.beforeEach(async (to) => {
-  if (!to.meta.requiresAdmin) return true;
-
-  const authStore = useAuthStore();
-  await authStore.ready();
-
-  if (!authStore.isSignedIn) {
-    try {
-      await authStore.signInWithGoogle();
-    } catch {
-      return { path: '/' };
-    }
+  if (to.meta.requiresAdmin) {
+    await useAuthStore().ready();
   }
-  // Let AdminView render the "not authorized" state for signed-in non-admins.
   return true;
 });
 

@@ -8,7 +8,8 @@
     <!-- Not signed in -->
     <div v-if="!auth.isSignedIn" class="gate">
       <p>Sign in to manage the catalog.</p>
-      <button @click="auth.signInWithGoogle()">Sign in with Google</button>
+      <button @click="signIn">Sign in with Google</button>
+      <p v-if="signInError" class="error">{{ signInError }}</p>
     </div>
 
     <!-- Signed in but not an admin -->
@@ -29,11 +30,22 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import UploadForm from '@/components/Admin/UploadForm.vue';
 
 const auth = useAuthStore();
+const signInError = ref('');
+
+async function signIn() {
+  signInError.value = '';
+  try {
+    await auth.signInWithGoogle();
+  } catch (e) {
+    signInError.value = e instanceof Error ? e.message : 'Sign-in failed';
+  }
+}
 </script>
 
 <style scoped>
