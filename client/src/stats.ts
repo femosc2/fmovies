@@ -25,10 +25,9 @@ export interface Stats {
   byDecade: Count[];
   byGenre: Count[];
   femoDistribution: Count[];
-  highestRated: RankedMovie[];
-  lowestRated: RankedMovie[];
-  mostOverrated: RankedMovie[]; // you rated much higher than IMDb
-  mostUnderrated: RankedMovie[]; // you rated much lower than IMDb
+  mostOverrated: RankedMovie[]; // Felix rated much higher than IMDb
+  sameAsImdb: RankedMovie[]; // Felix and IMDb agree (smallest gap)
+  mostUnderrated: RankedMovie[]; // Felix rated much lower than IMDb
   watchedByYear: Count[];
   longest: Movie | null;
   shortest: Movie | null;
@@ -117,14 +116,7 @@ export function computeStats(movies: Movie[]): Stats {
     }
   }
 
-  // Ranked-by-FemoRating helpers
-  const withFemo = movies
-    .map((movie) => ({ movie, value: num(movie.FemoRating) }))
-    .filter((x): x is RankedMovie => x.value !== null);
-  const highestRated = [...withFemo].sort((a, b) => b.value - a.value).slice(0, 8);
-  const lowestRated = [...withFemo].sort((a, b) => a.value - b.value).slice(0, 8);
-
-  // Divergence vs IMDb
+  // Divergence vs IMDb (value = Felix rating − IMDb rating)
   const withBoth = movies
     .map((movie) => {
       const f = num(movie.FemoRating);
@@ -134,6 +126,9 @@ export function computeStats(movies: Movie[]): Stats {
     .filter((x): x is RankedMovie => x !== null);
   const mostOverrated = [...withBoth].sort((a, b) => b.value - a.value).slice(0, 6);
   const mostUnderrated = [...withBoth].sort((a, b) => a.value - b.value).slice(0, 6);
+  const sameAsImdb = [...withBoth]
+    .sort((a, b) => Math.abs(a.value) - Math.abs(b.value))
+    .slice(0, 6);
 
   // Watched-by-year (from the stored "Watched" date string)
   const watchedYears = movies
@@ -176,9 +171,8 @@ export function computeStats(movies: Movie[]): Stats {
     byDecade,
     byGenre: tally(movies.flatMap((m) => asArray(m.Genre))),
     femoDistribution,
-    highestRated,
-    lowestRated,
     mostOverrated,
+    sameAsImdb,
     mostUnderrated,
     watchedByYear,
     longest,

@@ -1,8 +1,8 @@
 <template>
   <div class="stats">
     <header>
-      <h1>fmovies · statistics</h1>
-      <RouterLink class="back" to="/">← back to catalog</RouterLink>
+      <h1>fmovies</h1>
+      <NavTabs />
     </header>
 
     <p v-if="!movies.loaded" class="loading">Crunching the numbers…</p>
@@ -21,7 +21,7 @@
         </div>
         <div class="card">
           <span class="big">{{ s.avgFemoRating.toFixed(1) }}</span>
-          <span class="cap">avg your rating</span>
+          <span class="cap">Felix's avg rating</span>
         </div>
         <div class="card">
           <span class="big">{{ s.avgImdbRating.toFixed(1) }}</span>
@@ -51,7 +51,7 @@
           <BarChart :items="s.byGenre" />
         </section>
         <section class="panel">
-          <h2>Your rating distribution</h2>
+          <h2>Felix's rating distribution</h2>
           <BarChart :items="s.femoDistribution" />
         </section>
         <section v-if="s.watchedByYear.length > 1" class="panel">
@@ -62,19 +62,15 @@
 
       <div class="grid">
         <section class="panel">
-          <h2>Highest rated by you</h2>
-          <MovieStatList :items="s.highestRated" :fmt="rating" />
-        </section>
-        <section class="panel">
-          <h2>Lowest rated by you</h2>
-          <MovieStatList :items="s.lowestRated" :fmt="rating" />
-        </section>
-        <section class="panel">
-          <h2>You loved more than IMDb</h2>
+          <h2>Felix loved more than IMDb</h2>
           <MovieStatList :items="s.mostOverrated" :fmt="signed" />
         </section>
         <section class="panel">
-          <h2>You liked less than IMDb</h2>
+          <h2>Loved the same as IMDb</h2>
+          <MovieStatList :items="s.sameAsImdb" :fmt="signed" />
+        </section>
+        <section class="panel">
+          <h2>Felix liked less than IMDb</h2>
           <MovieStatList :items="s.mostUnderrated" :fmt="signed" />
         </section>
       </div>
@@ -107,16 +103,15 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { RouterLink } from 'vue-router';
 import { useMoviesStore } from '@/stores/movies';
 import { computeStats } from '@/stats';
+import NavTabs from '@/components/NavTabs.vue';
 import BarChart from '@/components/Stats/BarChart.vue';
 import MovieStatList from '@/components/Stats/MovieStatList.vue';
 
 const movies = useMoviesStore();
 const s = computed(() => computeStats(movies.movies));
 
-const rating = (v: number) => v.toFixed(1);
 const signed = (v: number) => `${v > 0 ? '+' : ''}${v.toFixed(1)}`;
 
 onMounted(() => {
@@ -135,13 +130,9 @@ onMounted(() => {
 }
 header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
-}
-.back {
-  color: #42b983;
-  text-decoration: none;
 }
 .loading {
   text-align: center;
