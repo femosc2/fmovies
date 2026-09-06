@@ -98,6 +98,68 @@ same monorepo; production aliases `fmovies.vercel.app`.
 - The client-side `isAdmin` check (`VITE_ADMIN_EMAILS`) is **UI gating only** — never the real
   boundary. The serverless function is the authority.
 
+## Maintenance: poster rot
+
+**Poster URLs decay and must be re-swept periodically.** Almost every `Poster` is an
+`m.media-amazon.com` URL; IMDb deletes/replaces those images over time and the old URL starts
+404ing. Nothing in the app surfaces this — `Movie.vue` renders the poster as a CSS
+`background-image` and the overlay/stat list use plain `<img>`, so a dead link is just a blank
+tile with no console error. **A record is never "missing" a poster — the field is always
+populated; the URL behind it is dead.** Don't look for empty/`N/A` values, HTTP-check the URLs.
+
+Last sweep: **2026-09-06 — 75 of 432 (17%) were dead** (72×404, plus 3×400 on stale
+`upload.wikimedia.org` thumbs). All 75 replaced; backup of the pre-write DB kept out of tree.
+
+### Procedure
+
+1. **Pull the catalog** — `curl https://fmovies-7dd88.firebaseio.com/.json` (public read, no auth).
+2. **HTTP-check every `Poster`** with a browser UA. 404 = gone; Wikimedia thumbs 400 when the
+   thumbnail is regenerated.
+3. **Re-look-up** through the site's own endpoint: `/api/searchOmdb?title=…` or `?imdbId=…`
+   (unauthenticated, keeps `OMDB_APIKEY` server-side — no need to pull the key locally).
+4. **Always verify `Director` + `Year` against the existing record before accepting a match.**
+   Non-negotiable: bare title lookups return confidently wrong films. Real misses from the 2026-09
+   sweep — `Swimmer` (2020, Jonatan Etzler) → Lynne Ramsay's 2012 short; `The Emigrants` (2021,
+   Poppe) → Troell's 1971 original; `The Silence` (1963, Bergman) → the 2019 horror film;
+   `Kill Bill: Volume 2` → *The Making of Kill Bill: Volume 2*; `Disco` (2019, Norwegian) → the
+   2008 French comedy. Compare only the first director and the first 4 chars of `Year`, and expect
+   name-order variants (`Kar-Wai Wong` vs `Wong Kar-Wai`) and ±1y OMDb drift on festival releases.
+5. **OMDb frequently serves the *same dead URL*** — it is not an independent source. It could not
+   fix 21 of the 75 (all 12 `Johan Falk:*`, plus `1-1`, `A Snowy Christmas`, `Inside the Diamond`,
+   `Intercourse`, `Olla`, `Swimmer`, `Portrait d'une jeune fille…`). For those, fall back to
+   **TMDb** — it resolved all 21. TMDb images: `https://image.tmdb.org/t/p/w500<poster_path>`.
+   - `GET /3/find/{ttID}?external_source=imdb_id` is precise — prefer it over title search.
+   - For shorts/obscure titles, `/3/search/person` → `/3/person/{id}/movie_credits` and pick the
+     directing credit by year. This is the only thing that found the right `Swimmer`.
+   - **No TMDb key is stored in this project** (deliberately — it is not needed at runtime). Ask
+     the user for one; free from themoviedb.org. Don't commit it.
+6. **Getting an IMDb ID when the OMDb title lookup misses:** Wikidata `wbsearchentities` +
+   `wbgetentities` (claim `P345`), searching en/sv/fr labels. Use the **entity API, not SPARQL** —
+   `query.wikidata.org` returned 502/504 on most requests.
+7. **Dead ends, don't retry them:** IMDb blocks scraping (`www.imdb.com/title/…` → HTTP 202, empty
+   body, no `og:image`). Wikipedia `pageimages` returns nothing for films — non-free posters are
+   excluded from the API. Stripping the `._V1_SX300` transform off a dead Amazon URL also 404s;
+   the underlying asset is gone, not just the derivative.
+
+### Writing the fixes
+
+- **Update the `Poster` field only**, via `firebase-admin` + root `serviceAccount.json`
+  (`admin.database().ref().child(key).update({ Poster })`). Guard each write with a
+  compare-and-set against the value seen during the scan so a concurrent change isn't clobbered.
+- **Do NOT route this through `/api/addMovie`** — it rewrites the whole record via `toMovie()` and
+  would reset `Watched` to today and overwrite `FemoRating`.
+- **Back up first:** `curl …/.json -o backup-<ts>.json`, and keep it out of the repo.
+- Run the script **from the repo root** so `firebase-admin` resolves — a script sitting in a temp
+  dir won't find it (`NODE_PATH` and `-e require(…)` both fight Windows path handling; just
+  `cp` the script in, run it, delete it).
+- **Verify after:** re-pull the DB and diff against the backup — assert the entry count is
+  unchanged, that *only* `Poster` differs and *only* on the intended keys, then re-crawl all
+  posters expecting zero non-200.
+
+Known open issue: the client has **no placeholder fallback**, so any future rot is silently
+invisible again. A title-card fallback on image error in `Movie.vue` / `MovieOverlay.vue` /
+`MovieStatList.vue` would make the next decay self-evident.
+
 ## Conventions
 
 - **Always branch from a freshly pulled `master`.** Before starting new work, run
@@ -127,6 +189,8 @@ same monorepo; production aliases `fmovies.vercel.app`.
   configuration; and both domains in Auth → **Authorized domains**.
 - **OMDb returns HTTP 200 on a miss** with `{ "Response": "False" }` — treat as 404 (handled in
   `omdb.ts`).
+- **Poster URLs rot** — stored `m.media-amazon.com` links go 404 over time and fail silently (blank
+  tile, no error). Re-sweep periodically; see [Maintenance: poster rot](#maintenance-poster-rot).
 - **Client build type-check:** use `vue-tsc --noEmit` (not `-b`/composite) — composite build mode
   emitted a stray `vite.config.js` that broke Vite's ESM config loader.
 - `@vue/tsconfig@0.7` has no `tsconfig.node.json`; `client/tsconfig.node.json` is self-contained.
