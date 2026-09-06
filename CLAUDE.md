@@ -93,6 +93,9 @@ same monorepo; production aliases `fmovies.vercel.app`.
 
 ## Conventions
 
+- **Always branch from a freshly pulled `master`.** Before starting new work, run
+  `git checkout master && git pull`, then create the feature branch from it. Never branch off another
+  feature branch.
 - **Commits: Conventional Commits** (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, optional scope
   like `fix(auth):`). **Do NOT add `Co-Authored-By: Claude` trailers; never list Claude as author or
   committer.** Keep commits atomic. Work on a branch and open a PR (default branch is `master`).
