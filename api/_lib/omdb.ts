@@ -12,7 +12,7 @@ export interface OmdbQuery {
 }
 
 async function fetchOmdb(query: OmdbQuery): Promise<OmdbResponse> {
-  const key = process.env.OMDB_APIKEY;
+  const key = process.env.OMDB_APIKEY?.trim();
   if (!key) throw { status: 500, msg: 'OMDB_APIKEY is not set' };
   if (!query.title && !query.imdbId) throw { status: 400, msg: 'title or imdbId is required' };
 

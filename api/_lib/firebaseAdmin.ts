@@ -14,7 +14,7 @@ export function getAdminDb(): Database {
   if (getApps().length) {
     app = getApps()[0];
   } else {
-    const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
+    const raw = process.env.FIREBASE_SERVICE_ACCOUNT?.trim();
     if (!raw) throw { status: 500, msg: 'FIREBASE_SERVICE_ACCOUNT is not set' };
 
     const serviceAccount = JSON.parse(raw);
@@ -25,7 +25,7 @@ export function getAdminDb(): Database {
 
     app = initializeApp({
       credential: cert(serviceAccount),
-      databaseURL: process.env.FIREBASE_DATABASE_URL,
+      databaseURL: process.env.FIREBASE_DATABASE_URL?.trim(),
     });
   }
 
