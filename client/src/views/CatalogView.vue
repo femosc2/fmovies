@@ -21,3 +21,4 @@ onMounted(() => {
   movies.fetchMovies();
 });
 </script>
+
