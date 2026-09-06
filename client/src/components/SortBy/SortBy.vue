@@ -1,30 +1,22 @@
 <template>
-<div>
-  <h2>Sort By</h2>
-  <button @click="setSortBy('rating')" v-bind:class="{ 'active': this.sortBy === 'rating'}">Rating</button>
-  <button @click="setSortBy('watched')" v-bind:class="{ 'active': this.sortBy === 'watched'}">Recently Watched</button>
-</div>
+  <div>
+    <h2>Sort By</h2>
+    <button :class="{ active: movies.sortBy === 'rating' }" @click="movies.setSortBy('rating')">
+      Rating
+    </button>
+    <button :class="{ active: movies.sortBy === 'watched' }" @click="movies.setSortBy('watched')">
+      Recently Watched
+    </button>
+  </div>
 </template>
 
-<script>
-export default {
-  name: "HelloWorld",
-  methods: {
-    setSortBy(sortBy) {
-      this.$store.commit('setSortBy', sortBy);
-    }
-  },
-  computed: {
-    sortBy() {
-      return this.$store.state.sortBy;
-    },
-  },
-};
+<script setup lang="ts">
+import { useMoviesStore } from '@/stores/movies';
+
+const movies = useMoviesStore();
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-
 div {
   position: fixed;
   display: block;
@@ -43,7 +35,7 @@ div {
 }
 
 .active {
-  background-color: rgba(255,255,255, 1); 
+  background-color: rgba(255, 255, 255, 1);
   transition: 0.25s;
 }
 
@@ -53,7 +45,7 @@ button {
   border: 1px solid #2c3e50;
   font-size: 25px;
   color: #000;
-  background-color: rgba(255,255,255, 0.2); 
+  background-color: rgba(255, 255, 255, 0.2);
   height: 150px;
   width: 150px;
   text-align: center;

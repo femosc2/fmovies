@@ -1,3 +1,22 @@
-server/src/node_modules
+# dependencies
+node_modules/
+**/node_modules/
+
+# build output
+client/dist/
+dist/
+
+# env & secrets — never commit real values or the Firebase service account
 .env
-client/.env.example
+.env.local
+.env.*.local
+client/.env
+client/.env.local
+serviceAccount*.json
+
+# vercel
+.vercel
+
+# logs / editor
+*.log
+.DS_Store
