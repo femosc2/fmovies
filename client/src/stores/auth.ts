@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import {
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signOut,
   onAuthStateChanged,
   type User,
@@ -17,6 +18,7 @@ const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAILS ?? '')
 interface AuthState {
   user: User | null;
   initialized: boolean;
+  error: string | null;
 }
 
 let readyPromise: Promise<void> | null = null;
@@ -25,6 +27,7 @@ export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
     user: null,
     initialized: false,
+    error: null,
   }),
 
   getters: {
@@ -36,10 +39,15 @@ export const useAuthStore = defineStore('auth', {
   },
 
   actions: {
-    // Subscribe to Firebase auth state once. Returns a promise that resolves after the first
-    // state is known, so route guards can await a definitive signed-in/out answer.
+    // Subscribe to Firebase auth state once, and complete any pending redirect sign-in. Returns a
+    // promise that resolves after the first state is known, so route guards can await a definitive
+    // signed-in/out answer.
     init(): Promise<void> {
       if (readyPromise) return readyPromise;
+      // Completes the redirect flow on return from Google; surfaces any redirect error.
+      getRedirectResult(auth).catch((e: unknown) => {
+        this.error = e instanceof Error ? e.message : 'Sign-in failed';
+      });
       readyPromise = new Promise<void>((resolve) => {
         onAuthStateChanged(auth, (user) => {
           this.user = user;
@@ -56,8 +64,11 @@ export const useAuthStore = defineStore('auth', {
       return this.init();
     },
 
+    // Redirect-based sign-in — navigates the page to Google (no popup to be blocked) and returns
+    // to the app, where init()/getRedirectResult completes it.
     async signInWithGoogle() {
-      await signInWithPopup(auth, googleProvider);
+      this.error = null;
+      await signInWithRedirect(auth, googleProvider);
     },
 
     async logout() {

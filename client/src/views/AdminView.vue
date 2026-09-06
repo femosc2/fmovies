@@ -9,7 +9,7 @@
     <div v-if="!auth.isSignedIn" class="gate">
       <p>Sign in to manage the catalog.</p>
       <button @click="signIn">Sign in with Google</button>
-      <p v-if="signInError" class="error">{{ signInError }}</p>
+      <p v-if="signInError || auth.error" class="error">{{ signInError || auth.error }}</p>
     </div>
 
     <!-- Signed in but not an admin -->
