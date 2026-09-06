@@ -1,21 +1,16 @@
 <template>
-    <ul>
-      <Movie v-for="movie in movies" :key="movie.title" :movie="movie"/>
-    </ul>
+  <ul>
+    <Movie v-for="movie in movies" :key="movie.Title" :movie="movie" />
+  </ul>
 </template>
 
-<script>
-import Movie from "./components/Movie";
-export default {
-  name: "HelloWorld",
-  props: ["movies"],
-  components: {
-    Movie
-    },
-};
+<script setup lang="ts">
+import Movie from './components/Movie.vue';
+import type { Movie as MovieType } from '@shared/movie';
+
+defineProps<{ movies: MovieType[] }>();
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 ul {
   display: inline-flex;

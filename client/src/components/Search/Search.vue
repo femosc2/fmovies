@@ -1,69 +1,25 @@
 <template>
   <div>
     <input
-      type="text"
       v-model="search"
-      v-on:keyup="setFilter"
+      type="text"
       autofocus
       placeholder="Search for a movie, parts of the plot or release year"
     />
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      search: "",
-      filter: [],
-      sortedMovies: [],
-    };
-  },
-  components: {},
-  computed: {
-    movies() {
-      return this.$store.state.movies;
-    },
-    query() {
-      return this.search.toLowerCase();
-    },
-    sortBy() {
-      return this.$store.state.sortBy;
-    },
-  },
-  methods: {
-    setFilter() {
-      this.sortedMovies = this.movies;
-      this.$store.commit("setSearch", this.search.toLowerCase());
-      this.filter = this.movies.filter(
-        (m) =>
-          m.Title.toLowerCase().includes(this.query) ||
-          m.Director.toLowerCase().includes(this.query) ||
-          m.Plot.toLowerCase().includes(this.query) ||
-          m.Year.toLowerCase().includes(this.query)
-      );
-      this.$store.commit("setFilteredMovies", this.filter);
-    },
-  },
-  watch: {
-    sortBy() {
-      if (this.$store.state.sortBy === "rating") {
-        this.filter = this.movies.sort(
-          (m1, m2) => m2.FemoRating - m1.FemoRating
-        );
-        this.setFilter();
-      } else {
-        this.filter = this.movies.sort(
-          (m1, m2) => Date.parse(m2.Watched) - Date.parse(m1.Watched)
-        );
-        this.setFilter();
-      }
-    },
-  },
-};
+<script setup lang="ts">
+import { ref, watch } from 'vue';
+import { useMoviesStore } from '@/stores/movies';
+
+const movies = useMoviesStore();
+const search = ref('');
+
+// Filtering/sorting are pure store getters now — we just push the query into the store.
+watch(search, (value) => movies.setSearch(value));
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 input {
   width: 50vw;
