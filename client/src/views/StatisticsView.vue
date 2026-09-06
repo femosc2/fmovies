@@ -1,9 +1,6 @@
 <template>
   <div class="stats">
-    <header>
-      <h1>fmovies</h1>
-      <NavTabs />
-    </header>
+    <h1>Statistics</h1>
 
     <p v-if="!movies.loaded" class="loading">Crunching the numbers…</p>
     <p v-else-if="s.totalMovies === 0" class="loading">No movies yet.</p>
@@ -105,7 +102,6 @@
 import { computed, onMounted } from 'vue';
 import { useMoviesStore } from '@/stores/movies';
 import { computeStats } from '@/stats';
-import NavTabs from '@/components/NavTabs.vue';
 import BarChart from '@/components/Stats/BarChart.vue';
 import MovieStatList from '@/components/Stats/MovieStatList.vue';
 
@@ -122,17 +118,20 @@ onMounted(() => {
 <style scoped>
 .stats {
   min-height: 100vh;
-  padding: 24px;
+  padding: 90px 24px 40px;
   max-width: 1100px;
   margin: 0 auto;
   color: #fff;
   text-align: left;
 }
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
+.stats > h1 {
+  margin: 0 0 24px;
+  font-size: 30px;
+}
+@media screen and (max-width: 700px) {
+  .stats {
+    padding: 24px 16px 90px;
+  }
 }
 .loading {
   text-align: center;

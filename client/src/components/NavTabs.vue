@@ -12,18 +12,20 @@ import { RouterLink } from 'vue-router';
 <style scoped>
 .tabs {
   display: inline-flex;
-  gap: 4px;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 4px;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 6px;
   border-radius: 999px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 .tab {
-  padding: 7px 18px;
+  padding: 11px 26px;
   border-radius: 999px;
   color: #fff;
   text-decoration: none;
-  font-size: 14px;
-  opacity: 0.65;
+  font-size: 17px;
+  font-weight: 600;
+  opacity: 0.7;
   transition: 0.2s;
   white-space: nowrap;
 }
