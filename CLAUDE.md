@@ -81,6 +81,13 @@ Project: `fmovies-0zzo` (scope `felix-moraus-projects`). **Root Directory = repo
 rewrites everything else to `index.html` for the SPA router. Production and preview both deploy the
 same monorepo; production aliases `fmovies.vercel.app`.
 
+**Deploys are automatic via the GitHub↔Vercel Git integration (production branch = `master`):**
+- **Merge to `master` → automatic production deploy** to `fmovies.vercel.app` (~30–60s). Just merge;
+  do NOT run `vercel deploy --prod` — it only redundantly rebuilds the same commit.
+- **Push a branch / open a PR → automatic preview deploy.**
+- Use the `vercel` CLI only for one-off previews outside the git flow (e.g. testing an unmerged
+  branch locally-built). A merge-triggered deploy is identifiable by its `…-git-master-…` alias.
+
 ## Security model
 
 - Realtime DB rules are permanently `{ ".read": true, ".write": false }` (`database.rules.json`).
