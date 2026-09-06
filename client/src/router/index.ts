@@ -10,6 +10,13 @@ const router = createRouter({
       component: () => import('@/views/CatalogView.vue'),
     },
     {
+      // Deep link to a movie — renders the same catalog view (gallery behind) and
+      // opens the detail modal for the matching title slug.
+      path: '/movie/:slug',
+      name: 'movie',
+      component: () => import('@/views/CatalogView.vue'),
+    },
+    {
       path: '/statistics',
       name: 'statistics',
       component: () => import('@/views/StatisticsView.vue'),

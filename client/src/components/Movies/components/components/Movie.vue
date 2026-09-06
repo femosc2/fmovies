@@ -3,7 +3,7 @@
     <figure
       class="movie"
       :style="{ 'background-image': 'url(' + movie.Poster + ')' }"
-      @click="movies.openOverlay(movie)"
+      @click="open"
     >
       <div>
         {{ formatRating(movie.FemoRating) }}
@@ -13,13 +13,19 @@
 </template>
 
 <script setup lang="ts">
-import { useMoviesStore } from '@/stores/movies';
+import { useRouter } from 'vue-router';
 import { formatRating } from '@/format';
+import { movieSlug } from '@/slug';
 import type { Movie } from '@shared/movie';
 
 const props = defineProps<{ movie: Movie }>();
 const { movie } = props;
-const movies = useMoviesStore();
+const router = useRouter();
+
+// Navigate to the movie's URL; CatalogView opens the modal from the route.
+function open() {
+  router.push(`/movie/${movieSlug(movie.Title)}`);
+}
 </script>
 
 <style lang="css" scoped>
