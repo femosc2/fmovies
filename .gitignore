@@ -20,3 +20,6 @@ serviceAccount*.json
 # logs / editor
 *.log
 .DS_Store
+
+.vercel
+.env*
