@@ -12,7 +12,7 @@
         <li v-for="actor in movies.overlay.Actors" :key="actor">{{ actor }}</li>
       </ul>
       <h2>IMDB rating: {{ movies.overlay.ImdbRating }}</h2>
-      <h2>My rating: {{ movies.overlay.FemoRating }}</h2>
+      <h2>My rating: {{ formatRating(movies.overlay.FemoRating) }}</h2>
       <p>{{ movies.overlay.Plot }}</p>
     </section>
     <img :src="movies.overlay.Poster" />
@@ -22,6 +22,7 @@
 
 <script setup lang="ts">
 import { useMoviesStore } from '@/stores/movies';
+import { formatRating } from '@/format';
 
 const movies = useMoviesStore();
 </script>
