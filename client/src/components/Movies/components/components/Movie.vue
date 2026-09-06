@@ -6,7 +6,7 @@
       @click="movies.openOverlay(movie)"
     >
       <div>
-        {{ movie.FemoRating }}
+        {{ formatRating(movie.FemoRating) }}
       </div>
     </figure>
   </li>
@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import { useMoviesStore } from '@/stores/movies';
+import { formatRating } from '@/format';
 import type { Movie } from '@shared/movie';
 
 const props = defineProps<{ movie: Movie }>();
