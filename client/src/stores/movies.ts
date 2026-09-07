@@ -32,8 +32,9 @@ export const useMoviesStore = defineStore('movies', {
       return copy.sort((a, b) => Number(b.FemoRating) - Number(a.FemoRating));
     },
 
-    // Search across Title/Director/Plot/Year. Empty search => full (sorted) list. This replaces
-    // the old dual `movies`/`filteredMovies` arrays and the `length === 0`-means-"no search" hack.
+    // Search across Title/Director/Actors/Plot/Year. Empty search => full (sorted) list. This
+    // replaces the old dual `movies`/`filteredMovies` arrays and the `length === 0`-means-"no
+    // search" hack. `Actors` is an array and Firebase omits empty ones, so guard before iterating.
     displayMovies(): Movie[] {
       const q = this.search.trim().toLowerCase();
       const list = this.sortedMovies;
@@ -42,6 +43,7 @@ export const useMoviesStore = defineStore('movies', {
         (m) =>
           m.Title.toLowerCase().includes(q) ||
           m.Director.toLowerCase().includes(q) ||
+          m.Actors?.some((a) => a.toLowerCase().includes(q)) ||
           m.Plot.toLowerCase().includes(q) ||
           m.Year.toLowerCase().includes(q),
       );
